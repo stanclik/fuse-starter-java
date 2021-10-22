@@ -1,6 +1,5 @@
 package org.galatea.starter.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
