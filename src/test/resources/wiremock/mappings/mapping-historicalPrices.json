@@ -1,0 +1,56 @@
+{
+  "id" : "83db57e2-09e8-4799-8e43-a5996dbde919",
+  "name" : "stock_fb_chart_date_20211018",
+  "request" : {
+    "url" : "/stock/FB/chart/date/20211018?chartByDay=true",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "jsonBody" : [
+      {
+        "close": 335.34,
+        "high": 335.89,
+        "low": 327.5,
+        "open": 328.95,
+        "symbol": "FB",
+        "volume": 21585018,
+        "id": "HISTORICAL_PRICES",
+        "key": "FB",
+        "subkey": "",
+        "date": "2021-10-18",
+        "updated": 1634605334000,
+        "changeOverTime": 0,
+        "marketChangeOverTime": 0,
+        "uOpen": 328.95,
+        "uClose": 335.34,
+        "uHigh": 335.89,
+        "uLow": 327.5,
+        "uVolume": 21585018,
+        "fOpen": 328.95,
+        "fClose": 335.34,
+        "fHigh": 335.89,
+        "fLow": 327.5,
+        "fVolume": 21585018,
+        "label": "Oct 18, 21",
+        "change": 0,
+        "changePercent": 0
+      }
+    ],
+    "headers" : {
+      "Server" : "nginx",
+      "Date" : "Mon, 25 Oct 2021 19:12:55 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Set-Cookie" : "ctoken=b0841be426864898923b290e4be5cf29; Max-Age=43200; Path=/; Expires=Tue, 26 Oct 2021 07:12:55 GMT",
+      "iexcloud-messages-used" : "3",
+      "iexcloud-credits-used" : "3",
+      "iexcloud-premium-messages-used" : "0",
+      "iexcloud-premium-credits-used" : "0",
+      "X-Content-Type-Options" : "nosniff",
+      "Strict-Transport-Security" : "max-age=15768000"
+    }
+  },
+  "uuid" : "83db57e2-09e8-4799-8e43-a5996dbde919",
+  "persistent" : true,
+  "insertionIndex" : 34
+}

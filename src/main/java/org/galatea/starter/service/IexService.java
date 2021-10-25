@@ -60,11 +60,33 @@ public class IexService {
       final String symbol,
       final String range,
       final String date) {
-    return iexClient.getHistoricalPricesForSymbol(symbol,
-        range,
-        date,
-        true,
-        System.getenv("API_TOKEN"));
+
+    if (symbol.isEmpty()) {
+      return Collections.emptyList();
+    } else {
+      List<IexHistoricalPrice> historicalPrices = iexClient.getHistoricalPricesForSymbol(symbol,
+          range,
+          date,
+          true,
+          System.getenv("API_TOKEN"));
+      historicalPrices = insertSymbol(historicalPrices, symbol);
+      return historicalPrices;
+    }
   }
 
+  /**
+   * Takes a list of IexHistoricalPrice objects and sets each object's symbol field to symbol.
+   * @param prices A list of IexHistoricalPrice objects.
+   * @param symbol A string representing a symbol.
+   * @return A list of updated IexHistoricalPrice objects.
+   */
+
+  public List<IexHistoricalPrice> insertSymbol(final List<IexHistoricalPrice> prices,
+      final String symbol) {
+
+    for (IexHistoricalPrice price : prices) {
+      price.setSymbol(symbol);
+    }
+    return prices;
+  }
 }

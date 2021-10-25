@@ -81,4 +81,34 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$", is(Collections.emptyList())))
         .andReturn();
   }
+
+  @Test
+  public void testGetHistoricalPrices() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+            .get("/iex/historicalPrices?symbol=FB&range=date&date=20211018")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].symbol", is("FB")))
+        .andExpect(jsonPath("$[0].close").value(new BigDecimal("335.34")))
+        .andExpect(jsonPath("$[0].high").value(new BigDecimal("335.89")))
+        .andExpect(jsonPath("$[0].low").value(new BigDecimal("327.5")))
+        .andExpect(jsonPath("$[0].open").value(new BigDecimal("328.95")))
+        .andExpect(jsonPath("$[0].volume").value(21585018))
+        .andExpect(jsonPath("$[0].date").value("2021-10-18"))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesEmpty() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", is(Collections.emptyList())))
+        .andReturn();
+  }
 }

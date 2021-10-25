@@ -62,28 +62,10 @@ public class IexRestController extends BaseRestController {
       MediaType.APPLICATION_JSON_VALUE})
   public List<IexHistoricalPrice> getHistoricalPrices(
       @RequestParam(value = "symbol") final String symbol,
-      @RequestParam(value = "range") final String range,
+      @RequestParam(value = "range", defaultValue = "1m") final String range,
       @RequestParam(value = "date", defaultValue = "") final String date) {
-    List<IexHistoricalPrice> historicalPrices = iexService.getHistoricalPricesForSymbol(symbol,
-                                                                                        range,
-                                                                                        date);
-    historicalPrices = insertSymbol(historicalPrices, symbol);
-    return historicalPrices;
-  }
 
-  /**
-   * Takes a list of IexHistoricalPrice objects and sets each object's symbol field to symbol.
-   * @param prices A list of IexHistoricalPrice objects.
-   * @param symbol A string representing a symbol.
-   * @return A list of updated IexHistoricalPrice objects.
-   */
-
-  public List<IexHistoricalPrice> insertSymbol(final List<IexHistoricalPrice> prices,
-                                               final String symbol) {
-    for (IexHistoricalPrice price : prices) {
-      price.setSymbol(symbol);
-    }
-    return prices;
+    return iexService.getHistoricalPricesForSymbol(symbol, range, date);
   }
 
 }
