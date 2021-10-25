@@ -1,8 +1,6 @@
 package org.galatea.starter.service;
 
-import java.lang.module.Configuration;
 import java.util.List;
-import net.sf.ehcache.config.Configuration.RuntimeCfg;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
@@ -25,7 +23,7 @@ public interface IexClient {
    * @return a list of all of the stock symbols supported by IEX.
    */
   @GetMapping("/ref-data/symbols")
-  List<IexSymbol> getAllSymbols();
+  List<IexSymbol> getAllSymbols(@RequestParam("token") String token);
 
   /**
    * Get the last traded price for each stock symbol passed in. See https://iextrading.com/developer/docs/#last.
@@ -34,7 +32,8 @@ public interface IexClient {
    * @return a list of the last traded price for each of the symbols passed in.
    */
   @GetMapping("/tops/last")
-  List<IexLastTradedPrice> getLastTradedPriceForSymbols(@RequestParam("symbols") String[] symbols);
+  List<IexLastTradedPrice> getLastTradedPriceForSymbols(@RequestParam("symbols") String[] symbols,
+      @RequestParam("token") String token);
 
   /**
    * Get historical price data (close, high, low, open, and volume) for the given symbol
@@ -45,10 +44,12 @@ public interface IexClient {
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
 
-  @GetMapping("/stock/{symbol}/chart/{range}/{date}?chartByDay=true&token=" + "${API_TOKEN}")
+  @GetMapping("/stock/{symbol}/chart/{range}/{date}")
   List<IexHistoricalPrice> getHistoricalPricesForSymbol(
       @PathVariable("symbol") String symbol,
       @PathVariable("range") String range,
-      @PathVariable("date") String date);
+      @PathVariable("date") String date,
+      @RequestParam("chartByDay") Boolean chartByDay,
+      @RequestParam("token") String token);
 
 }
