@@ -29,7 +29,7 @@ public class IexService {
    * @return a list of all Stock Symbols from IEX.
    */
   public List<IexSymbol> getAllSymbols() {
-    return iexClient.getAllSymbols();
+    return iexClient.getAllSymbols(System.getenv("API_TOKEN"));
   }
 
   /**
@@ -42,7 +42,8 @@ public class IexService {
     if (CollectionUtils.isEmpty(symbols)) {
       return Collections.emptyList();
     } else {
-      return iexClient.getLastTradedPriceForSymbols(symbols.toArray(new String[0]));
+      return iexClient.getLastTradedPriceForSymbols(symbols.toArray(new String[0]),
+          System.getenv("API_TOKEN"));
     }
   }
 
@@ -59,7 +60,11 @@ public class IexService {
       final String symbol,
       final String range,
       final String date) {
-    return iexClient.getHistoricalPricesForSymbol(symbol, range, date);
+    return iexClient.getHistoricalPricesForSymbol(symbol,
+        range,
+        date,
+        true,
+        System.getenv("API_TOKEN"));
   }
 
 }
