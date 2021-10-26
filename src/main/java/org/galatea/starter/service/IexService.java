@@ -75,8 +75,7 @@ public class IexService {
         rangeAndDate,
         true,
         System.getenv("API_TOKEN"));
-    historicalPrices = insertSymbol(historicalPrices, symbol);
-    return historicalPrices;
+    return insertSymbol(historicalPrices, symbol);
   }
 
   /**

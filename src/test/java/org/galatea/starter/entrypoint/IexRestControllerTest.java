@@ -124,4 +124,17 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$", hasSize(3)))
         .andReturn();
   }
+
+  @Test
+  public void testGetHistoricalPricesDefaultRange() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=AAPL")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].date").value("2021-09-27"))
+        .andExpect(jsonPath("$[-1].date").value("2021-10-25"))
+        .andReturn();
+  }
 }
