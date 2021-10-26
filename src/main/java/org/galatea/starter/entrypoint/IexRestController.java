@@ -65,7 +65,7 @@ public class IexRestController extends BaseRestController {
       @RequestParam(value = "range", defaultValue = "1m") final String range,
       @RequestParam(value = "date", defaultValue = "") final String date) {
 
-    return iexService.getHistoricalPricesForSymbol(symbol, range, date);
+    return iexService.getHistoricalPrices(symbol, range, date);
   }
 
 }
