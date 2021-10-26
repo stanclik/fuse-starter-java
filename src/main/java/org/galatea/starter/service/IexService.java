@@ -56,22 +56,27 @@ public class IexService {
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
 
-  public List<IexHistoricalPrice> getHistoricalPricesForSymbol(
+  public List<IexHistoricalPrice> getHistoricalPrices(
       final String symbol,
       final String range,
       final String date) {
 
     if (symbol.isEmpty()) {
       return Collections.emptyList();
-    } else {
-      List<IexHistoricalPrice> historicalPrices = iexClient.getHistoricalPricesForSymbol(symbol,
-          range,
-          date,
-          true,
-          System.getenv("API_TOKEN"));
-      historicalPrices = insertSymbol(historicalPrices, symbol);
-      return historicalPrices;
     }
+
+    StringBuilder rangeAndDateBuilder = new StringBuilder(range);
+    if (!(date.isEmpty())) {
+      rangeAndDateBuilder.append("/").append(date);
+    }
+    String rangeAndDate = rangeAndDateBuilder.toString();
+
+    List<IexHistoricalPrice> historicalPrices = iexClient.getHistoricalPrices(symbol,
+        rangeAndDate,
+        true,
+        System.getenv("API_TOKEN"));
+    historicalPrices = insertSymbol(historicalPrices, symbol);
+    return historicalPrices;
   }
 
   /**
