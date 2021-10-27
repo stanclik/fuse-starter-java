@@ -84,7 +84,7 @@ public class IexRestControllerTest extends ASpringTest {
   }
 
   @Test
-  public void testGetHistoricalPrices() throws Exception {
+  public void testGetHistoricalPricesDate() throws Exception {
 
     MvcResult result = this.mvc.perform(
         org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -102,7 +102,7 @@ public class IexRestControllerTest extends ASpringTest {
   }
 
   @Test
-  public void testGetHistoricalPricesEmpty() throws Exception {
+  public void testGetHistoricalPricesEmptySymbol() throws Exception {
 
     MvcResult result = this.mvc.perform(
             org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -137,4 +137,5 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$[-1].date").value("2021-10-25"))
         .andReturn();
   }
+
 }
