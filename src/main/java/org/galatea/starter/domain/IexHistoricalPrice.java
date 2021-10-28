@@ -1,6 +1,8 @@
 package org.galatea.starter.domain;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class IexHistoricalPrice {
   @JsonIgnore
   private Long uid;
 
+  @JsonAlias(value = "key")
   private String symbol;
   private String date;
   private BigDecimal open;
