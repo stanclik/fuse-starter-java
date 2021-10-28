@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
@@ -79,11 +80,13 @@ public class IexService {
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
 
+  @Cacheable(cacheNames = "historicalPrices")
   public List<IexHistoricalPrice> getHistoricalPrices(
       final String symbol,
       final String range,
       final String date) {
 
+    System.out.println("Fetching data from IEX.");
     if (symbol.isEmpty()) {
       return Collections.emptyList();
     }
