@@ -65,6 +65,10 @@ public class IexRestController {
       @RequestParam(value = "symbol") final String symbol,
       @RequestParam(value = "range", defaultValue = "1m") final String range,
       @RequestParam(value = "date", required = false) final String date) {
+
+    log.info("Requesting historical prices for symbol {}, range {}.",
+        symbol,
+        (range.equals("date") ? date : range));
     return iexService.getHistoricalPrices(symbol, range, date);
   }
 
