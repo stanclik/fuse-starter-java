@@ -63,8 +63,9 @@ public class IexService {
       final String range,
       final String date) {
 
-    System.out.println("Fetching data from IEX.");
+   log.info("Requesting historical prices from IEX.");
     if (symbol.isEmpty()) {
+      log.warn("Received historical price request for empty symbol. Returning empty list.");
       return Collections.emptyList();
     }
 
