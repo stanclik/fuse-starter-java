@@ -23,7 +23,9 @@ public interface IexClient {
    * @return a list of all of the stock symbols supported by IEX.
    */
   @GetMapping("/ref-data/symbols")
-  List<IexSymbol> getAllSymbols(@RequestParam("token") String token);
+  List<IexSymbol> getAllSymbols(
+      @RequestParam(value = "token", required = false) String token); // Setting required = false
+                                                                      // is useful for testing.
 
   /**
    * Get the last traded price for each stock symbol passed in. See https://iextrading.com/developer/docs/#last.
@@ -33,21 +35,38 @@ public interface IexClient {
    */
   @GetMapping("/tops/last")
   List<IexLastTradedPrice> getLastTradedPriceForSymbols(@RequestParam("symbols") String[] symbols,
-      @RequestParam("token") String token);
+      @RequestParam(value = "token", required = false) String token);
 
   /**
    * Get historical price data (close, high, low, open, and volume) for the given symbol
-   * over a specified time range. See https://iexcloud.io/docs/api/#historical-prices.
+   * over a range of time (not a single day). See https://iexcloud.io/docs/api/#historical-prices.
    * @param symbol A string representing a stock symbol for which to retrieve historical data.
-   * @param range A string specifying a range and date. See link.
+   * @param range A string other than "date" representing a range of time. See link.
+   * @param token An API token.
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
-
-  @GetMapping("/stock/{symbol}/chart/{rangeAndDate}")
-  List<IexHistoricalPrice> getHistoricalPrices(
+  @GetMapping("stock/{symbol}/chart/{range}")
+  List<IexHistoricalPrice> getHistoricalPriceRange(
       @PathVariable("symbol") String symbol,
-      @PathVariable("rangeAndDate") String range,
+      @PathVariable("range") String range,
+      @RequestParam(value = "token", required = false) String token);
+
+  /**
+   * Get historical price data (close, high, low, open, and volume) for the given symbol
+   * for a single date. See https://iexcloud.io/docs/api/#historical-prices.
+   * @param symbol A string representing a stock symbol for which to retrieve historical data.
+   * @param date A string specifying a date. See link.
+   * @param chartByDay true restricts the output to close, high, low, etc. over the course of the
+   *                   entire day. false results in outputting data for each minute of the day.
+   * @param token An API token.
+   * @return A list of IexHistoricalPrice objects for the symbol for the specified date.
+   */
+
+  @GetMapping("/stock/{symbol}/chart/date/{date}")
+  List<IexHistoricalPrice> getHistoricalPriceOnDate(
+      @PathVariable("symbol") String symbol,
+      @PathVariable("date") String date,
       @RequestParam("chartByDay") Boolean chartByDay,
-      @RequestParam("token") String token);
+      @RequestParam(value = "token", required = false) String token);
 
 }

@@ -60,7 +60,7 @@
       "id": "e4fbdf67-c674-40be-9396-febe48781562",
       "name": "stock_fb_chart_5d",
       "request": {
-        "url": "/stock/FB/chart/5d?chartByDay=true",
+        "url": "/stock/FB/chart/5d",
         "method": "GET"
       },
       "response": {
@@ -171,7 +171,7 @@
       "id" : "e041b570-0d80-4f03-be04-06090a356e9e",
       "name" : "stock_aapl_chart_1m",
       "request" : {
-        "url" : "/stock/AAPL/chart/1m?chartByDay=true",
+        "url" : "/stock/AAPL/chart/1m",
         "method" : "GET"
       },
       "response" : {
@@ -782,6 +782,133 @@
       "uuid" : "e041b570-0d80-4f03-be04-06090a356e9e",
       "persistent" : true,
       "insertionIndex" : 38
+    },
+    {
+      "id" : "daea0e92-668e-44b0-ae6b-5727235fdb2a",
+      "name" : "stock_fbfb_chart_5d",
+      "request" : {
+        "url" : "/stock/FBFB/chart/5d",
+        "method" : "GET"
+      },
+      "response" : {
+        "status" : 404,
+        "body" : "Unknown symbol",
+        "headers" : {
+          "Server" : "nginx",
+          "Date" : "Wed, 03 Nov 2021 16 : 14 : 47 GMT",
+          "Content-Type" : "text/html; charset=utf-8",
+          "Set-Cookie" : "ctoken=535ef39fe857434a8eae5a9fa07d075a; Max-Age=43200; Path=/; Expires=Thu, 04 Nov 2021 04 : 14 : 47 GMT",
+          "Strict-Transport-Security" : "max-age=15768000"
+        }
+      },
+      "uuid" : "daea0e92-668e-44b0-ae6b-5727235fdb2a",
+      "persistent" : true,
+      "insertionIndex" : 12
+    },
+    {
+      "id" : "bc2160a5-426b-4f59-9fa9-4cad4ec2b1cb",
+      "name" : "stock_fb_chart_1z",
+      "request" : {
+        "url" : "/stock/FB/chart/1z",
+        "method" : "GET"
+      },
+      "response" : {
+        "status" : 200,
+        "jsonBody" : [
+          {
+            "close" : 331.62,
+            "high" : 332.15,
+            "low" : 323.2,
+            "open" : 327.49,
+            "symbol" : "FB",
+            "volume" : 20786502,
+            "id" : "HISTORICAL_PRICES",
+            "key" : "FB",
+            "subkey" : "",
+            "date" : "2021-11-03",
+            "updated" : 1635988049000,
+            "changeOverTime" : 0,
+            "marketChangeOverTime" : 0,
+            "uOpen" : 327.49,
+            "uClose" : 331.62,
+            "uHigh" : 332.15,
+            "uLow" : 323.2,
+            "uVolume" : 20786502,
+            "fOpen" : 327.49,
+            "fClose" : 331.62,
+            "fHigh" : 332.15,
+            "fLow" : 323.2,
+            "fVolume" : 20786502,
+            "label" : "Nov 3, 21",
+            "change" : 0,
+            "changePercent" : 0
+          }
+        ],
+        "headers" : {
+          "Server" : "nginx",
+          "Date" : "Thu, 04 Nov 2021 16 : 09 : 29 GMT",
+          "Content-Type" : "application/json; charset=utf-8",
+          "Set-Cookie" : "ctoken=7ce75119467c4efc820db4b52ff8ac95; Max-Age=43200; Path=/; Expires=Fri, 05 Nov 2021 04 : 09 : 29 GMT",
+          "iexcloud-messages-used" : "11",
+          "iexcloud-credits-used" : "11",
+          "iexcloud-premium-messages-used" : "0",
+          "iexcloud-premium-credits-used" : "0",
+          "X-Content-Type-Options" : "nosniff",
+          "Strict-Transport-Security" : "max-age=15768000"
+        }
+      },
+      "uuid" : "bc2160a5-426b-4f59-9fa9-4cad4ec2b1cb",
+      "persistent" : true,
+      "insertionIndex" : 16
+    },
+    {
+      "id" : "7c3aad62-d66d-4946-a796-8d0bfd7f69f7",
+      "name" : "stock_fb_chart_date",
+      "request" : {
+        "url" : "/stock/FB/chart/date",
+        "method" : "GET"
+      },
+      "response" : {
+        "status" : 200,
+        "jsonBody" : [],
+        "headers" : {
+          "Server" : "nginx",
+          "Date" : "Thu, 04 Nov 2021 16:20:07 GMT",
+          "Content-Type" : "application/json; charset=utf-8",
+          "Set-Cookie" : "ctoken=02c60296eef94acfa0a2e7cccc4a91ed; Max-Age=43200; Path=/; Expires=Fri, 05 Nov 2021 04:20:07 GMT",
+          "iexcloud-messages-used" : "1",
+          "iexcloud-credits-used" : "1",
+          "iexcloud-premium-messages-used" : "0",
+          "iexcloud-premium-credits-used" : "0",
+          "X-Content-Type-Options" : "nosniff",
+          "Strict-Transport-Security" : "max-age=15768000"
+        }
+      },
+      "uuid" : "7c3aad62-d66d-4946-a796-8d0bfd7f69f7",
+      "persistent" : true,
+      "insertionIndex" : 18
+    },
+    {
+      "id" : "4e023a19-585a-431c-b75d-9a6bfb14535b",
+      "name" : "stock_fb_chart_date_20201332",
+      "request" : {
+        "url" : "/stock/FB/chart/date/20201332",
+        "method" : "GET"
+      },
+      "response" : {
+        "status" : 400,
+        "body" : "You have supplied invalid values for this request",
+        "headers" : {
+          "Server" : "nginx",
+          "Date" : "Thu, 04 Nov 2021 16:23:58 GMT",
+          "Content-Type" : "text/html; charset=utf-8",
+          "Set-Cookie" : "ctoken=051cf86ef2d04fa29b9f148de0f04def; Max-Age=43200; Path=/; Expires=Fri, 05 Nov 2021 04:23:58 GMT",
+          "Strict-Transport-Security" : "max-age=15768000"
+        }
+      },
+      "uuid" : "4e023a19-585a-431c-b75d-9a6bfb14535b",
+      "persistent" : true,
+      "insertionIndex" : 20
     }
   ]
 }

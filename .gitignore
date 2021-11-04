@@ -3,3 +3,4 @@
 !.idea/runConfigurations
 *.iml
 logs/*
+/src/main/resources/keys.csv

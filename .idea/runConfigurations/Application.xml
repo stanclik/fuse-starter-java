@@ -1,8 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Application" type="Application" factoryName="Application" nameIsGenerated="true">
-    <envs>
-      <env name="API_TOKEN" value="sk_df95b4285f3144908348526c7e2a2215" />
-    </envs>
     <option name="MAIN_CLASS_NAME" value="org.galatea.starter.Application" />
     <module name="fuse-starter-java" />
     <option name="PROGRAM_PARAMETERS" value="--spring.profiles.active=dev --server.port=8080" />

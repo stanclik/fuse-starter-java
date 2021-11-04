@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-public class IexRestController extends BaseRestController {
+public class IexRestController {
 
   @NonNull
   private IexService iexService;
@@ -53,7 +53,8 @@ public class IexRestController extends BaseRestController {
    * Get historical price data (close, high, low, open, and volume) for the given symbol
    * over a specified time range. See https://iexcloud.io/docs/api/#historical-prices.
    * @param symbol A string representing a stock symbol for which to retrieve historical data.
-   * @param range A string specifying a range of time. See link.
+   * @param range A string specifying a range of time. See link. Default value of "1m" in accordance
+   *              with IEX API.
    * @param date A string representing a date in YYYYMMDD format. See link.
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
@@ -63,8 +64,7 @@ public class IexRestController extends BaseRestController {
   public List<IexHistoricalPrice> getHistoricalPrices(
       @RequestParam(value = "symbol") final String symbol,
       @RequestParam(value = "range", defaultValue = "1m") final String range,
-      @RequestParam(value = "date", defaultValue = "") final String date) {
-
+      @RequestParam(value = "date", required = false) final String date) {
     return iexService.getHistoricalPrices(symbol, range, date);
   }
 
