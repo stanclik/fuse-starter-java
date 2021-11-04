@@ -1,5 +1,6 @@
 package org.galatea.starter.entrypoint;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,4 +82,127 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$", is(Collections.emptyList())))
         .andReturn();
   }
+
+  @Test
+  public void testGetHistoricalPricesDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+            .get("/iex/historicalPrices?symbol=FB&range=date&date=20211018")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].symbol", is("FB")))
+        .andExpect(jsonPath("$[0].close").value(new BigDecimal("335.34")))
+        .andExpect(jsonPath("$[0].high").value(new BigDecimal("335.89")))
+        .andExpect(jsonPath("$[0].low").value(new BigDecimal("327.5")))
+        .andExpect(jsonPath("$[0].open").value(new BigDecimal("328.95")))
+        .andExpect(jsonPath("$[0].volume").value(21585018))
+        .andExpect(jsonPath("$[0].date").value("2021-10-18"))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesEmptySymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", is(Collections.emptyList())))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesNullSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?range=5d")
+                .accept(MediaType.TEXT_HTML_VALUE))
+        .andExpect(status().is4xxClientError())
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesFakeSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=FBFB&range=5d")
+                .accept(MediaType.TEXT_HTML_VALUE))
+        .andExpect(status().is4xxClientError())
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesNullRange() throws Exception {
+
+    // This test expects valid results because the range parameter takes a default value of "1m".
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=AAPL")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].date").value("2021-09-27"))
+        .andExpect(jsonPath("$[-1].date").value("2021-10-25"))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesFakeRange() throws Exception {
+
+    // An invalid range appears to cause the IEX API to return data for the previous day.
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=FB&range=1z")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].symbol", is("FB")))
+        .andExpect(jsonPath("$[0].close").value(new BigDecimal("331.62")))
+        .andExpect(jsonPath("$[0].high").value(new BigDecimal("332.15")))
+        .andExpect(jsonPath("$[0].low").value(new BigDecimal("323.2")))
+        .andExpect(jsonPath("$[0].open").value(new BigDecimal("327.49")))
+        .andExpect(jsonPath("$[0].volume").value(20786502))
+        .andExpect(jsonPath("$[0].date").value("2021-11-03"))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesNullDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=FB&range=date")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(0)))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesFakeDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=FB&range=date&date=20201332")
+                .accept(MediaType.TEXT_HTML_VALUE))
+        .andExpect(status().is4xxClientError())
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesFiveDays() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?symbol=FB&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(3)))
+        .andReturn();
+  }
+
+
+
 }
