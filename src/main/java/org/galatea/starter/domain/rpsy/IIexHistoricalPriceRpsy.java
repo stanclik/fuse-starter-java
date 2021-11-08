@@ -10,10 +10,19 @@ import org.springframework.data.repository.CrudRepository;
 public interface IIexHistoricalPriceRpsy extends CrudRepository<IexHistoricalPrice, Long> {
 
   /**
-   * Retrieves all entities with the given symbol.
+   * Retrieves all entities with the given symbol and date.
    */
 
-  List<IexHistoricalPrice> findBySymbol(String symbol);
+  List<IexHistoricalPrice> findBySymbolAndDate(String symbol, String date);
+
+  /**
+   * Checks for the presence of an entity with the given data.
+   * @param symbol A string representing a symbol.
+   * @param date A string representing a date in YYYYMMDD format.
+   * @return True if the repository contains an entity with the given symbol and date; else, false.
+   */
+
+  boolean existsBySymbolAndDate(String symbol, String date);
 
   @Override
   @Cacheable(cacheNames = "historicalPrices", sync = true)

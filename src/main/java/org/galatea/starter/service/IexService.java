@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
+import org.galatea.starter.domain.rpsy.IIexHistoricalPriceRpsy;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -25,7 +26,10 @@ import org.springframework.util.ResourceUtils;
 public class IexService {
 
   @NonNull
-  private IexClient iexClient;
+  IexClient iexClient;
+
+  @NonNull
+  IIexHistoricalPriceRpsy priceRpsy;
 
   private final String key = setKey();
 
@@ -70,6 +74,56 @@ public class IexService {
   }
 
   /**
+   * Formats a date from YYYYMMDD format to YYYY-MM-DD format. This is to accommodate the historical
+   * price repository which automatically does this conversion.
+   * @param date A string representing a date in YYYYMMDD format.
+   * @return A string representing the same date in YYYY-MM-DD format.
+   */
+
+  private String formatDate(String date)
+  {
+    return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6);
+  }
+
+  /**
+   * Gets historical price data for the given symbol and date from the IEX API. Saves the
+   * IexHistoricalPrice object to the price repository as a side effect.
+   */
+
+  private List<IexHistoricalPrice> getHistoricalPriceForDate(String symbol, String date)
+  {
+    String searchDate = formatDate(date);
+    log.info("Searching repository for symbol {} and date {}", symbol, searchDate);
+
+    if (priceRpsy.existsBySymbolAndDate(symbol, searchDate)) {
+      log.info("Historical price for symbol {}, date{} found in repository.", symbol, date);
+      return priceRpsy.findBySymbolAndDate(symbol, searchDate);
+    } else {
+      log.info("Requesting historical price for symbol {}, date{} from IEX.", symbol, date);
+      List<IexHistoricalPrice> prices;
+      prices = iexClient.getHistoricalPriceForDate(symbol, date, true, key);
+      Iterable<IexHistoricalPrice> saved = priceRpsy.saveAll(prices);
+      log.info("Saved historical price to repository: {}", saved);
+      return prices;
+    }
+  }
+
+  /**
+   * Gets historical price data for the given symbol and range from the IEX API. Saves the
+   * IexHistoricalPrice objects to the price repository as a side effect.
+   */
+
+  @Cacheable(cacheNames = "historicalPrices", sync = true)
+  private List<IexHistoricalPrice> getHistoricalPricesForRange(String symbol, String range)
+  {
+    log.info("Requesting historical prices for range {} from IEX.", range);
+    List<IexHistoricalPrice> prices = iexClient.getHistoricalPriceForRange(symbol, range, key);
+    Iterable<IexHistoricalPrice> saved = priceRpsy.saveAll(prices);
+    log.info("Saved historical prices to repository: {}", saved);
+    return prices;
+  }
+
+  /**
    * Get historical price data (close, high, low, open, and volume) for the given symbol
    * over a specified time range. See https://iexcloud.io/docs/api/#historical-prices.
    * Note that, in case a valid date parameter is present, the value of the range parameter is
@@ -80,23 +134,22 @@ public class IexService {
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
 
-  @Cacheable(cacheNames = "historicalPrices")
   public List<IexHistoricalPrice> getHistoricalPrices(
       final String symbol,
       final String range,
       final String date) {
 
-   log.info("Requesting historical prices from IEX.");
     if (symbol.isEmpty()) {
       log.warn("Received historical price request for empty symbol. Returning empty list.");
       return Collections.emptyList();
     }
 
-    if (date != null) {
+    if (date != null)
+    {
       // Add a log warning here if range != "date"?
-      return iexClient.getHistoricalPriceOnDate(symbol, date, true, key);
-      } else {
-      return iexClient.getHistoricalPriceRange(symbol, range, key);
+      return getHistoricalPriceForDate(symbol, date);
+    } else {
+      return getHistoricalPricesForRange(symbol, range);
     }
   }
 }

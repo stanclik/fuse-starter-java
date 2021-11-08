@@ -4,6 +4,7 @@ import java.util.List;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,8 +46,10 @@ public interface IexClient {
    * @param token An API token.
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
+
+  @Cacheable(cacheNames = "historicalPrices")
   @GetMapping("stock/{symbol}/chart/{range}")
-  List<IexHistoricalPrice> getHistoricalPriceRange(
+  List<IexHistoricalPrice> getHistoricalPriceForRange(
       @PathVariable("symbol") String symbol,
       @PathVariable("range") String range,
       @RequestParam(value = "token", required = false) String token);
@@ -62,8 +65,9 @@ public interface IexClient {
    * @return A list of IexHistoricalPrice objects for the symbol for the specified date.
    */
 
+  //@Cacheable(cacheNames = "historicalPrices")
   @GetMapping("/stock/{symbol}/chart/date/{date}")
-  List<IexHistoricalPrice> getHistoricalPriceOnDate(
+  List<IexHistoricalPrice> getHistoricalPriceForDate(
       @PathVariable("symbol") String symbol,
       @PathVariable("date") String date,
       @RequestParam("chartByDay") Boolean chartByDay,
