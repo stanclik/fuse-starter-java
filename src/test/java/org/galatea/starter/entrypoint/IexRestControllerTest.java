@@ -11,6 +11,8 @@ import junitparams.JUnitParamsRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.galatea.starter.ASpringTest;
+import org.galatea.starter.service.IexService;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,14 @@ public class IexRestControllerTest extends ASpringTest {
 
   @Autowired
   private MockMvc mvc;
+
+  @Autowired
+  private IexService iexService;
+
+  @After
+  public void reset() {
+    iexService.resetService();
+  }
 
   @Test
   public void testGetSymbolsEndpoint() throws Exception {
@@ -202,7 +212,4 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$", hasSize(3)))
         .andReturn();
   }
-
-
-
 }

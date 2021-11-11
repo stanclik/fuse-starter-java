@@ -4,7 +4,6 @@ import java.util.List;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +24,8 @@ public interface IexClient {
    */
   @GetMapping("/ref-data/symbols")
   List<IexSymbol> getAllSymbols(
-      @RequestParam(value = "token", required = false) String token); // Setting required = false
-                                                                      // is useful for testing.
+      // Setting required = false is useful for testing.
+      @RequestParam(value = "token", required = false) String token);
 
   /**
    * Get the last traded price for each stock symbol passed in. See https://iextrading.com/developer/docs/#last.
@@ -47,7 +46,6 @@ public interface IexClient {
    * @return A list of IexHistoricalPrice objects for the symbol for each date in the range of time.
    */
 
-  @Cacheable(cacheNames = "historicalPrices")
   @GetMapping("stock/{symbol}/chart/{range}")
   List<IexHistoricalPrice> getHistoricalPriceForRange(
       @PathVariable("symbol") String symbol,
@@ -65,7 +63,6 @@ public interface IexClient {
    * @return A list of IexHistoricalPrice objects for the symbol for the specified date.
    */
 
-  //@Cacheable(cacheNames = "historicalPrices")
   @GetMapping("/stock/{symbol}/chart/date/{date}")
   List<IexHistoricalPrice> getHistoricalPriceForDate(
       @PathVariable("symbol") String symbol,

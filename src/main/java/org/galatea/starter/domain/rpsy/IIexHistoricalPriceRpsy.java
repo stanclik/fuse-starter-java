@@ -1,10 +1,8 @@
 package org.galatea.starter.domain.rpsy;
 
 import java.util.List;
-import java.util.Optional;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
 
 public interface IIexHistoricalPriceRpsy extends CrudRepository<IexHistoricalPrice, Long> {
@@ -16,6 +14,12 @@ public interface IIexHistoricalPriceRpsy extends CrudRepository<IexHistoricalPri
   List<IexHistoricalPrice> findBySymbolAndDate(String symbol, String date);
 
   /**
+   * Retrieves all entities with the given symbol and date in range.
+   */
+
+  List<IexHistoricalPrice> findBySymbolAndDateGreaterThanEqual(String symbol, String date);
+
+  /**
    * Checks for the presence of an entity with the given data.
    * @param symbol A string representing a symbol.
    * @param date A string representing a date in YYYYMMDD format.
@@ -24,13 +28,13 @@ public interface IIexHistoricalPriceRpsy extends CrudRepository<IexHistoricalPri
 
   boolean existsBySymbolAndDate(String symbol, String date);
 
-  @Override
-  @Cacheable(cacheNames = "historicalPrices", sync = true)
-  Optional<IexHistoricalPrice> findById(Long id);
+  /**
+   * Empties repository.
+   */
 
   @Override
   @CacheEvict(cacheNames = "historicalPrices")
-  void deleteById(Long id);
+  void deleteAll();
 
   /**
    * 'p0' required in key because java does not retain parameter names during compilation unless
